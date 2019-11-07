@@ -24,8 +24,14 @@ resource "google_compute_instance" "master" {
       // Include this section to give the VM an external ip address
     }
   }
+ # metadata = {
+ #   startup-script-custom = "${file("master.sh")}"
+ # }
+
+ #metadata_startup_script = "${file("./master.sh")}"
+
   metadata = {
-    startup-script = "${file("master.sh")}"
+    startup-script              = file("scripts/master.sh")
   }
 
 #  provisioner "file" {
@@ -40,6 +46,7 @@ resource "google_compute_instance" "master" {
 }
 
 resource "google_compute_instance" "webserver" {
+  count = "0"
   name         = "webserver"
   machine_type = "f1-micro"
   zone         = "us-central1-a"
